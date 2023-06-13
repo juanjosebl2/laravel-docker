@@ -36,12 +36,12 @@ class Blog extends Component
 
     public function render()
     {
-        return view('livewire.base-blog');
+        return view('livewire.blog');
     }
 
     public function index(): View
     {
-        return view('livewire.base-blog');
+        return view('livewire.blog');
     }
 
 }

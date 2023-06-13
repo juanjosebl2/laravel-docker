@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Livewire\Blog;
+use App\Http\Livewire\MainBlog;
 use App\Http\Livewire\MainTask;
 use App\Http\Livewire\Auth\Login;
 use App\Http\Livewire\Auth\Verify;
@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
 });
 
-Route::resource('blogs', Blog::class)
+Route::resource('blogs', MainBlog::class)
     ->only(['index', 'store'])
     ->middleware(['auth', 'verified']);
 
