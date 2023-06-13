@@ -7,6 +7,8 @@ use Illuminate\View\View;
 
 class MainBlog extends Component
 {
+    public $welcome = 'BLOGS CRUD';
+
     public function render()
     {
         return view('livewire.main-blog');
@@ -14,6 +16,6 @@ class MainBlog extends Component
 
     public function index(): View
     {
-        return view('livewire.main-blog');
+        return view('livewire.main-blog', ['welcome' => $this->welcome]);
     }
 }

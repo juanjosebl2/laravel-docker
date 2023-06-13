@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->text('description')->nullable();
+            $table->enum('difficulty', ['low', 'medium', 'high'])->nullable();
             $table->timestamps();
         });
     }

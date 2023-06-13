@@ -15,7 +15,8 @@ class Blog extends Component
     public function rules()
     {
         return [
-            'blog.title' => 'required|max:10',
+            'blog.title' => 'required|max:100',
+            'blog.description' => 'required|max:200',
         ];
     }
 
@@ -30,8 +31,25 @@ class Blog extends Component
     public function save()
     {
         $this->validate();
+        $user = auth()->user();
+        $this->blog->user_id = $user->id;
         $this->blog->save(); //Save in database
         $this->mount(); //For clear search after the press save
+    }
+
+    public function edit(BlogModel $blog)
+    {
+        $this->blog = $blog;
+    }
+
+    public function delete($id)
+    {
+        $blogToDelete = BlogModel::find($id);
+
+        if(!is_null($blogToDelete)) {
+            $blogToDelete->delete();
+            $this->mount();
+        }
     }
 
     public function render()
