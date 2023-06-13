@@ -15,6 +15,9 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+        <script src="https://cdn.tailwindcss.com"></script>
 
         @vite(['resources/sass/app.scss', 'resources/js/app.js'])
         @livewireStyles
