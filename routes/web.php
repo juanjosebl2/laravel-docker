@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClientController;
 use App\Http\Livewire\MainBlog;
 use App\Http\Livewire\MainTask;
 use App\Http\Livewire\Auth\Login;
@@ -66,4 +67,8 @@ Route::resource('blogs', MainBlog::class)
 
 Route::resource('tasks', MainTask::class)
     ->only(['index', 'store'])
+    ->middleware(['auth', 'verified']);
+
+Route::resource('clients', ClientController::class)
+    ->only(['index'])
     ->middleware(['auth', 'verified']);

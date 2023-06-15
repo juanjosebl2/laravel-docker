@@ -26,6 +26,7 @@ class ClientController extends Controller
         }
 
         return response()->json($array);
+        //return view('clients.clients')->with('clients', $array); //for view
     }
 
     /**

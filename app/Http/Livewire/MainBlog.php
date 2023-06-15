@@ -11,11 +11,11 @@ class MainBlog extends Component
 
     public function render()
     {
-        return view('livewire.main-blog');
+        return view('livewire.blog.main-blog');
     }
 
     public function index(): View
     {
-        return view('livewire.main-blog', ['welcome' => $this->welcome]);
+        return view('livewire.blog.main-blog', ['welcome' => $this->welcome]);
     }
 }
