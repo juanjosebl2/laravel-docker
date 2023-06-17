@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('blogs', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->timestamps();
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->enum('difficulty', ['low', 'medium', 'high'])->nullable();
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('blogs');
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->dropColumn('difficulty');
+        });
     }
 };

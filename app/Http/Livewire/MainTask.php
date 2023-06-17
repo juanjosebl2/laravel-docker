@@ -14,6 +14,7 @@ class MainTask extends Component
 
     public function taskMessage($message)
     {
+
         session()->flash('message', $message);
     }
 

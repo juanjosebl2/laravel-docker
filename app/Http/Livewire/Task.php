@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Illuminate\View\View;
 use App\Models\Task as TaskModel;
+use Illuminate\Support\Facades\Auth;
 
 class Task extends Component
 {
@@ -15,21 +16,23 @@ class Task extends Component
     public function rules()
     {
         return [
-            'task.text' => 'required|max:10',
+            'task.text' => 'required|max:30',
+            'task.difficulty' => 'required',
         ];
     }
 
     //run once
     public function mount()
     {
-        $this->tasks = TaskModel::orderBy('id','desc')->get();
+        //$this->tasks = TaskModel::orderBy('id','desc')->get();
+        $this->tasks = TaskModel::where('user_id', Auth::id())->orderByRaw("FIELD(difficulty, 'high', 'medium', 'low')")->get();
         $this->task = new TaskModel();
     }
 
     //check automatic task.text -> ipdated"TaskText"
     public function updatedTaskText()
     {
-        $this->validate(['task.text' => 'max:10']);
+        $this->validate(['task.text' => 'max:30']);
     }
 
     public function edit(TaskModel $task)
@@ -41,6 +44,8 @@ class Task extends Component
     public function save()
     {
         $this->validate();
+        $user = auth()->user();
+        $this->task->user_id = $user->id;
         $this->task->save(); //Save in database
         $this->mount(); //For clear search after the press save
         $this->emitUp('taskMessage', 'Task saved successfully');
