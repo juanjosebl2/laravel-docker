@@ -15,21 +15,30 @@ class Client extends Component
      */
     public function index()
     {
-        $clients = ClientModel::all();
-        $array = [];
-        foreach ($clients as $client) {
-            $array[] = [
-                'id' => $client->id,
-                'name' => $client->name,
-                'email' => $client->email,
-                'phone' => $client->phone,
-                'address' => $client->address,
-                'services' => $client->services,
-            ];
+        try {
+
+            $clients = ClientModel::all();
+            $array = [];
+            foreach ($clients as $client) {
+                $array[] = [
+                    'id' => $client->id,
+                    'name' => $client->name,
+                    'email' => $client->email,
+                    'phone' => $client->phone,
+                    'address' => $client->address,
+                    'services' => $client->services,
+                ];
+            }
+
+            return response()->json($array, 200);
+            //return view('clients.clients')->with('clients', $array); //for view
+
+        } catch (ValidationException $exception) {
+            throw new HttpException(400, "Invalid data - {$exception->getMessage()}");
+        } catch (\Exception $exception) {
+            throw new HttpException(500, "Internal Server Error");
         }
 
-        return response()->json($array);
-        //return view('clients.clients')->with('clients', $array); //for view
     }
 
     /**
@@ -45,17 +54,26 @@ class Client extends Component
      */
     public function store(Request $request)
     {
-        $client = new ClientModel;
-        $client->name = $request->name;
-        $client->email = $request->email;
-        $client->phone = $request->phone;
-        $client->address = $request->address;
-        $client->save();
-        $data = [
-            'message' => 'Client create successfully',
-            'client' => $client,
-        ];
-        return response()->json($data);
+
+        try {
+
+            $client = new ClientModel;
+            $client->name = $request->name;
+            $client->email = $request->email;
+            $client->phone = $request->phone;
+            $client->address = $request->address;
+            $client->save();
+            $data = [
+                'message' => 'Client create successfully',
+                'client' => $client,
+            ];
+            return response()->json($data, 201);
+
+        } catch (ValidationException $exception) {
+            throw new HttpException(400, "Invalid data - {$exception->getMessage()}");
+        } catch (\Exception $exception) {
+            throw new HttpException(500, "Internal Server Error");
+        }
     }
 
     /**
@@ -63,12 +81,28 @@ class Client extends Component
      */
     public function show(ClientModel $client)
     {
-        $data = [
-            'message' => 'Client details',
-            'client' => $client,
-            'services' => $client->services
-        ];
-        return response()->json($data);
+
+        try {
+
+            $data = [
+                'message' => 'Client details',
+                'client' => [
+                    'id' => $client->id,
+                    'name' => $client->name,
+                    'email' => $client->email,
+                    'phone' => $client->phone,
+                    'address' => $client->address,
+                ],
+                'services' => $client->services,
+            ];
+            return response()->json($data, 200);
+
+        } catch (ValidationException $exception) {
+            throw new HttpException(400, "Invalid data - {$exception->getMessage()}");
+        } catch (\Exception $exception) {
+            throw new HttpException(500, "Internal Server Error");
+        }
+        
     }
 
     /**
@@ -84,16 +118,25 @@ class Client extends Component
      */
     public function update(Request $request, ClientModel $client)
     {
-        $client->name = $request->name;
-        $client->email = $request->email;
-        $client->phone = $request->phone;
-        $client->address = $request->address;
-        $client->save();
-        $data = [
-            'message' => 'Client create successfully',
-            'client' => $client,
-        ];
-        return response()->json($data);
+
+        try {
+
+            $client->name = $request->name;
+            $client->email = $request->email;
+            $client->phone = $request->phone;
+            $client->address = $request->address;
+            $client->save();
+            $data = [
+                'message' => 'Client create successfully',
+                'client' => $client,
+            ];
+            return response()->json($data, 200);
+
+        } catch (ValidationException $exception) {
+            throw new HttpException(400, "Invalid data - {$exception->getMessage()}");
+        } catch (\Exception $exception) {
+            throw new HttpException(500, "Internal Server Error");
+        }
     }
 
     /**
@@ -101,12 +144,21 @@ class Client extends Component
      */
     public function destroy(ClientModel $client)
     {
-        $client->delete();
-        $data = [
-            'message' => 'Client delete successfully',
-            'client' => $client,
-        ];
-        return response()->json($data);
+        
+        try {
+
+            $client->delete();
+            $data = [
+                'message' => 'Client delete successfully',
+                'client' => $client,
+            ];
+            return response()->json($data, 204);
+
+        } catch (ValidationException $exception) {
+            throw new HttpException(400, "Invalid data - {$exception->getMessage()}");
+        } catch (\Exception $exception) {
+            throw new HttpException(500, "Internal Server Error");
+        }
     }
 
     public function attach(Request $request)
@@ -119,7 +171,7 @@ class Client extends Component
                 'message' => 'Service attached successfully',
                 'client' => $client,
             ];
-            return response()->json($data);
+            return response()->json($data, 200);
 
         } catch (ValidationException $exception) {
             throw new HttpException(400, "Invalid data - {$exception->getMessage()}");
@@ -131,12 +183,21 @@ class Client extends Component
 
     public function detach(Request $request)
     {
-        $client = ClientModel::find($request->client_id);
-        $client->services()->detach($request->service_id);
-        $data = [
-            'message' => 'Service detach successfully',
-            'client' => $client,
-        ];
-        return response()->json($data);
+
+        try {
+
+            $client = ClientModel::find($request->client_id);
+            $client->services()->detach($request->service_id);
+            $data = [
+                'message' => 'Service detach successfully',
+                'client' => $client,
+            ];
+            return response()->json($data);
+
+        } catch (ValidationException $exception) {
+            throw new HttpException(400, "Invalid data - {$exception->getMessage()}");
+        } catch (\Exception $exception) {
+            throw new HttpException(500, "Internal Server Error");
+        }
     }
 }
