@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('text');
             $table->boolean('done')->default(false);
+            $table->enum('difficulty', ['low', 'medium', 'high'])->nullable();
             $table->timestamps();
         });
     }
