@@ -1,0 +1,8 @@
+git clone
+cd laravel-docker
+cp .env.test .env
+compose install
+npm install
+docker compose build
+docker compose up
+npm run dev
